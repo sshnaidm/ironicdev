@@ -95,4 +95,6 @@ ironic-dbsync --config-file etc/ironic/ironic.conf.local create_schema
 
 ironic-api -d --config-file etc/ironic/ironic.conf.local &> /var/log/ironic-api.log &
 ironic-conductor -d --config-file etc/ironic/ironic.conf.local &> /var/log/ironic-conductor.log &
+# let's give them time to start
+while ! $(ls /var/log/ironic-api.log /var/log/ironic-conductor.log &>/dev/null); do sleep 1; done;
 tail -f /var/log/ironic-*.log
